@@ -1,0 +1,89 @@
+---
+title: "TzeFungLung_Assign2"
+author: "jim lung"
+date: "09-07-2017"
+output: html_document
+---
+
+# Problem 1
+
+__1. Show that $A^T A \neq AA^T$ in general. (Proof and demonstration.)__
+
+\[Assume A=\begin{bmatrix} 2 & 3\\ 2 & 4 \end{bmatrix}\]
+\[A^{T}=\begin{bmatrix} 2 & 2\\ 3 & 4 \end{bmatrix}\]
+\[A^{T}A=\begin{bmatrix} 2 & 2\\ 3 & 4 \end{bmatrix}\begin{bmatrix} 2 & 3\\ 2 & 4 \end{bmatrix} = \begin{bmatrix} 8 & 14\\ 14 & 25 \end{bmatrix}\]
+\[AA^{T}=\begin{bmatrix} 2 & 3\\ 2 & 4 \end{bmatrix}\begin{bmatrix} 2 & 2\\ 3 & 4 \end{bmatrix} = \begin{bmatrix} 13 & 16\\ 16 & 20 \end{bmatrix}\]
+
+From the above result, it is prove that $A^T A \neq AA^T$
+
+__2. For a special type of square matrix A, we get $A^T A = AA^T$ . Under what conditions could this be true? (Hint: The Identity matrix I is an example of such a matrix).__
+
+A matrix is symmetric $A^T A = AA^T$ if it equals its own transpose, for example: \[\begin{bmatrix} 1 & 3 & 4\\ 3 & 7 & 8\\ 4& 8 & 5 \end{bmatrix}\] is symmetric.
+
+```{r}
+
+A <- matrix(c(1,3,4,3,7,8,4,8,5), 3)
+A
+S <- t(A) %*% A
+S
+M <- A %*% t(A)
+M
+
+```
+
+
+# Problem 2
+
+Matrix factorization is a very important problem. There are supercomputers built just to do matrix factorizations. Every second you are on an airplane, matrices are being factorized. Radars that track flights use a technique called Kalman filtering. At the heart of Kalman Filtering is a Matrix Factorization operation. Kalman Filters are solving linear systems of equations when they track your flight using radars.
+
+Write an R function to factorize a square matrix A into LU or LDU, whichever you prefer. You don't have to worry about permuting rows of A and you can assume that A is less than 5x5, if you need to hard-code any variables in your code. 
+
+##Fuction to factorize a square matrix into LDU:
+
+```{r}
+factorization <- function(A){
+  if (nrow(A) == ncol(A)){
+    U <- A
+    L <- diag(nrow(A))
+    
+    
+    for(i in 1:(nrow(A)-1)){
+      for(j in (i+1):nrow(A)){
+        L[j,i] <- U[j,i]/U[i,i]
+        U[j,] <- U[j,]-U[i,]*L[j,i]
+      }
+    }
+    
+     D <- diag(nrow(A))
+    
+    for(k in 1:nrow(A)){
+     
+      D[k,k] <- U[k,k]
+      U[k,] <- U[k,]/D[k,k]
+      
+    }
+    
+  } else {
+    NM <- "Matrix is not square."
+    NM
+  }
+list("A" = A, "L" = L, "D" = D, "U" = U) 
+  
+}
+
+
+```
+
+## Testing the fuction:
+
+$$A = \left[ \begin{array}{cc}1 & 1 & 2 \\2 & 1 & 0 \\3 & 1 & 1 \end{array} \right]$$
+```{r}
+A <- matrix(c(1, 2, 3, 1, 1, 1, 2, 0, 1), 3,3)
+
+factorization(A)
+```
+
+$$A = LDU' = \left[ \begin{array}{cc}1 & 0 & 0 \\2 & 1 & 0 \\3 & 2 & 1 \end{array} \right] \left[ \begin{array}{cc}1 & 0 & 0 \\0 & -1 & 0 \\0 & 0 & 3 \end{array} \right] \left[ \begin{array}{cc}1 & 1 & 2 \\0 & 1 & 4 \\0 & 0 & 1 \end{array} \right]$$
+
+
+
