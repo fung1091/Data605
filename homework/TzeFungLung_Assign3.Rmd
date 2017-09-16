@@ -1,0 +1,120 @@
+---
+title: "TzeFungLung_Assign3"
+author: "jim lung"
+date: "09-15-2017"
+output: html_document
+---
+
+#Problem Set 1
+##1. What is the rank of the matrix $A$?
+$$ A = \begin{bmatrix}1 & 2 & 3 & 4 \\-1 & 0 & 1 & 3 \\0 & 1 & -2 & 1 \\5 & 4 & -2 & -3\end{bmatrix}$$ 
+$$ A = \begin{bmatrix}1 & 2 & 3 & 4 \\0 & 2 & 4 & 7 \\0 & 1 & -2 & 1 \\5 & 4 & -2 & -3\end{bmatrix} (R2 <- R1 +R2)$$
+$$ A = \begin{bmatrix}1 & 2 & 3 & 4 \\0 & 2 & 4 & 7 \\0 & 1 & -2 & 1 \\0 & -6 & -17 & -23\end{bmatrix} (R4 <- -5R1 +R4)$$
+
+$$ A = \begin{bmatrix}1 & 2 & 3 & 4 \\0 & 2 & 4 & 7 \\0 & 1 & -2 & 1 \\0 & 0 & -5 & -2\end{bmatrix} (R4 <- 3R2+R4)$$
+$$ A = \begin{bmatrix}1 & 2 & 3 & 4 \\0 & 2 & 4 & 7 \\0 & 0 & -4 & -5/2 \\0 & 0 & -5 & -2\end{bmatrix} (R3 <- 1/2R2+R3)$$
+$$ A = \begin{bmatrix}1 & 2 & 3 & 4 \\0 & 2 & 4 & 7 \\0 & 0 & -4 & -5/2 \\0 & 0 & 0 & 9/8\end{bmatrix} (R4 <- 5/4R2+R4)$$
+
+$$ Rank\,\,=\,4 $$
+### R solution
+```{r}
+library(matrixcalc)
+
+m <- matrix(c(1,2,3,4,-1,0,1,3,0,1,-2,1,5,4,-2,-3), nrow = 4, ncol = 4, byrow = TRUE)
+m
+matrix.rank(m)
+```
+   
+##2. Given an $mxn$ matrix where $m>n$, what can be the maximum rank? The minimum rank, assuming that the matrix is non-zero?   
+    
+The Maximum rank is $m$ (rows)    
+The Minimum rank is 1, the others rows may be linearly dependent.  
+     
+##3. What is the rank of matrix $B$?
+$$ B = \begin{bmatrix}1 & 2 & 1 \\3 & 6 & 3 \\2 & 4 & 2 \end{bmatrix}$$    
+
+$$ B = \begin{bmatrix}1 & 2 & 1 \\0 & 0 & 0 \\2 & 4 & 2 \end{bmatrix} (R2 <- -3R1+R2)$$ 
+$$ B = \begin{bmatrix}1 & 2 & 1 \\0 & 0 & 0 \\0 & 0 & 0 \end{bmatrix} (R3 <- -2R1+R3)$$ 
+$$ Rank\,\,=\,1 $$   
+R2 and R3 are linearly dependent.
+```{r}
+# Test
+m <- matrix(c(1,2,1,3,6,3,2,4,2), nrow = 3, ncol = 3, byrow = TRUE)
+m
+matrix.rank(m)
+```
+   
+#Problem Set 2
+Compute the eigenvalues and eigenvectors of the matrix A. You¡¦ll need to write out the characteristic polynomial and show your solution.   
+Eigenvalues:
+
+##characteristic polynomial:
+$$ P(\lambda)=det(A-\lambda\,I_n)=0$$ 
+$$ A = \begin{bmatrix}1 & 2 & 3 \\0 & 4 & 5 \\0 & 0 & 6 \end{bmatrix};\,\, \lambda\,I_3 = \begin{bmatrix}\lambda & 0 & 0 \\0 & \lambda & 0 \\0 & 0 & \lambda \end{bmatrix}$$ 
+
+$$ det\,\begin{bmatrix}1-\lambda & 2 & 3 \\0 & 4-\lambda & 5 \\0 & 0 & 6-\lambda \end{bmatrix} = 0$$ 
+$$(1-\lambda)(4-\lambda)(6-\lambda)=0$$
+$$ \lambda ^{3}-11\lambda^{2}+34\lambda-24=0$$
+##Eigenvalues of A:
+$$\lambda=1,\, \lambda=4,\, \lambda=6$$
+   
+##Eigenvectors:   
+
+
+#### $\lambda_1=6$
+
+$$(A- \lambda_1I)v=0$$
+
+$$-5x + 2y + 3z = 0 \\ -2y + 5z = 0$$
+If we make $$Y=1$$:
+$$-2 + 5z = 0; z = 2/5$$
+Substituting Y and Z:
+$$-5x + 2 + 3(2/5) = 0 \\ -5x = -16/5 \\ x = 16/25$$
+$$E_{\lambda_1=6}=c\begin{bmatrix}16/25 \\ 1 \\ 2/5\end{bmatrix}$$
+
+#### $\lambda_2=4$
+
+$$(A- \lambda_2 I)v=0$$
+
+$$-3x + 2y + z = 0\\ 5z = 0\\2z = 0$$
+If we set $$Y=1$$ then $$X=2/3$$
+$$E_{\lambda_2=4}=c\begin{bmatrix}2/3 \\ 1 \\ 0\end{bmatrix}$$
+
+#### $\lambda_3=1$
+
+$$(A- \lambda_3 I)v=0$$
+
+$$\begin{bmatrix}0&2&3\\0&3&5\\0&0&5\end{bmatrix}\begin{bmatrix}X\\Y\\Z\end{bmatrix}=0$$
+
+Equations:  
+$$2y + 3z = 0\\ 3y + 5z = 0\\5z = 0$$
+
+The only non-zero solution is $$X=1$$ and Y and Z = 0
+$$E_{\lambda_3=1}=c\begin{bmatrix}1 \\ 0 \\ 0\end{bmatrix}$$
+
+
+### Test
+
+```{r}
+library(pracma)
+mat <- matrix(data = c(1,0,0,2,4,0,3,5,6), nrow = 3, ncol = 3, byrow = FALSE)
+mat
+charpoly(mat)
+eigen(mat)
+
+# eign vectors
+eigen(mat)$values
+```
+
+
+```{r}
+
+#for L = 6
+eigen(mat)$vectors[,1]
+
+#for L = 4
+eigen(mat)$vectors[,2]
+
+#for L = 1
+eigen(mat)$vectors[,3]
+```
