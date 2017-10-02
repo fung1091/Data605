@@ -1,0 +1,83 @@
+---
+title: "TzeFungLung_Assign5"
+author: "jim lung"
+date: "09-28-2017"
+output: html_document
+---
+
+#Assignment 5
+
+## Choose independently two numbers B and C at random from the interval [0, 1] with uniform density. Prove that B and C are proper probability distributions. Note that the point (B,C) is then chosen at random in the unit square.
+
+### Find the probability that
+
+### a) B + C < 1/2.
+```{r}
+B <- runif(100, min = 0, max = 1)
+
+C <- runif(100, min = 0, max = 1)
+
+A = B+C
+
+hist(A)
+
+
+integrand <- function(x){x}
+
+result <- integrate(integrand, lower = 0, upper = 1/2)
+result$value
+```
+
+### (b) BC < 1/2.
+```{r}
+B2 <- runif(1000, min = 0, max = 1)
+C2 <- runif(1000, min = 0, max = 1)
+
+A2 <- B2 * C2
+
+hist(A2)
+
+integrand2 <- function(x){0.5/x}
+result2 <- integrate(integrand2, 0.5,1)
+Prob2 <- result2$value + 0.5
+Prob2
+```
+
+### (c) |B ??? C| < 1/2
+```{r}
+B3 <- runif(1000, min = 0, max = 1)
+C3 <- runif(1000, min = 0, max = 1)
+
+Z3 <- abs(B3 - C3)
+hist(Z3)
+
+integrand3 <- function(x){2-2*x}
+result3 <- integrate(integrand3, lower = 0, upper = 1)
+result3
+```
+
+### (d) max{B,C} < 1/2.
+```{r}
+B4 <- runif(1000, min = 0, max = 1)
+C4 <- runif(1000, min = 0, max = 1)
+
+Z4 <- pmax(B4, C4)
+hist(Z4)
+
+integrand4 <- function(x){2*x}
+result4 <- integrate(integrand4, 0, 1)
+result4
+```
+
+### (e) min{B,C} < 1/2.
+```{r}
+B5 <- runif(1000, min = 0, max = 1)
+C5 <- runif(1000, min = 0, max = 1)
+
+Z5 <- pmin(B4, C4)
+hist(Z5)
+
+integrand5 <- function(x){2-2*x}
+result5 <- integrate(integrand5, 0, 1)
+result5
+```
