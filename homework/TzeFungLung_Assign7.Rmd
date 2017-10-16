@@ -1,0 +1,66 @@
+---
+title: "TzeFungLung_Assign7"
+author: "jim lung"
+date: "10-12-2017"
+output: html_document
+---
+
+# Data605 Assignment 7
+
+## 1. Let X1 , X2, . . . , Xn be n mutually independent random variables, each of which is uniformly distributed on the integers from 1 to k. Let Y denote the minimum of the Xi¡¦s. Find the distribution of Y .
+
+The uniformly distributed on the integers from 1 to k, the miniumum value of Y is one Xi from Xi's:
+
+Assume the distribution function P(Y=z) = min{X1,X2,X3....Xi}
+
+Case 1:
+Assumption:
+Y=1, which is minimum sample Xi
+(Select one sample from 10 samples)
+x = {1,2,3,4,5}
+Size of all sample x = {1,2,3,4,5} : \[5^{10}\]
+Size of non-sample x = {1,2,3,4} : \[(5-1)^{10}\]
+\[P(Y=1)= ((5-0)^{10}-(5-1)^{10} )/ 5 ^{10}\]
+
+Case 2:
+Assumption:
+(Select 2 sample from 10 samples)
+x = {1,2,3,4,5}
+Size of all sample: \[5^{10}\]
+Size of non-sample = \[(5^{10}-4^{10})+3^{10}\]
+\[P(Y=1)= (5^{10}-(5^{10}-4^{10})-3^{10})/ 5 ^{10}\]
+
+Using avariables:
+\[k^{n}???(k^{n}???(k???1)^{n})???(k???2)^{n}\]
+\[=(k???1)^{n}???(k???2)^{n}\]
+
+When m=2;
+\[=((k+m-1)^{n}???(k???m)^{n})/k^n\]
+
+
+## 2. Your organization owns a copier (future lawyers, etc.) or MRI (future doctors). This machine has a manufacturer¡¦s expected lifetime of 1 0 years. This means that we expect one failure every ten years. (Include the probability statements and R Code for each part.)
+
+### a. What is the probability that the machine will fail after 8 years?. Provide also the expected value and standard deviation. Model as a geometric. (Hint: the probability is equivalent to not failing during the first 8 years..)
+
+```{r}
+
+
+```
+
+### b. What is the probability that the machine will fail after 8 years?. Provide also the expected value and standard deviation. Model as an exponential.
+
+```{r}
+
+
+```
+
+### c. What is the probability that the machine will fail after 8 years?. Provide also the expected value and standard deviation. Model as a binomial. (Hint: 0 success in 8 years)
+
+
+
+### d. What is the probability that the machine will fail after 8 years?. Provide also the expected value and standard deviation. Model as a Poisson.
+
+
+
+
+
