@@ -1,0 +1,141 @@
+---
+title: "TzeFungLung_Assign9"
+author: "jim lung"
+date: "10-28-2017"
+output: html_document
+---
+
+# P.363 # 9.3.11
+
+# 11 The price of one share of stock in the Pilsdor??? Beer Company (see Exercise 8.2.12) is given by Yn on the nth day of the year. Finn observes that the differences Xn = Yn+1 ??? Yn appear to be independent random variables with a common distribution having mean £g = 0 and variance £m2 = 1/4. If Y1 = 100, estimate the probability that Y365 is
+
+From \(X_n = Y_{n+1} ??? Y_n\), 
+\(Y_{n+1} = X_n + Y_n\)
+\(Y_{365} = X_{364}+ Y_{364}\)
+\(Y_{365} = Y_1 + X_1 + X_2 + X_3...X_{364}\)
+\(\bar x = Y_{365} - Y_1\)
+
+when 
+\(Y_1 = 100\)
+
+£g = 0 and \(£m=\sqrt{\frac{1}{4}}\)
+
+Variance for \(Y_{365} = 365 \times \frac{1}{4} = 91.25\)
+
+\(Zscore = \frac{x - \mu}{\sigma} \)
+
+## (a) >= 100).
+
+\(P(Y_{365} \geq 100) = P(x +100 \geq 100) = P(x \geq 0)\)
+
+\(Zscore = \frac{0 - 0}{0.5} \)
+
+z=0
+
+\(P(Y_{365} \geq 100) = 0.5\)
+
+```{r}
+x <- 0
+o <- sqrt(91.25)
+1 - pnorm(x, mean = 0, sd = o, lower.tail = TRUE)
+
+```
+
+## (b) >= 110.
+
+\(P(Y_{365} \geq 110) = P(x +100 \geq 110) = P(x \geq 10)\)
+```{r}
+x <- 10
+o <- sqrt(91.25)
+1 - pnorm(x, mean = 0, sd = o, lower.tail = TRUE)
+
+```
+## (c) >= 120.
+
+\(P(Y_{365} \geq 120) = P(x +100 \geq 120) = P(x \geq 20)\)
+```{r}
+x <- 20
+o <- sqrt(91.25)
+1 - pnorm(x, mean = 0, sd = o, lower.tail = TRUE)
+
+```
+
+# 2. Calculate the expected value and variance of the binomial distribution using the moment generating function.
+
+Moment generating function:
+
+\(g(t) = E(e^{tx}) = \sum^n_{x=0} e^{tx}f(x)\)
+
+Binomial Distribution function:
+
+\(f(x) = \left( \begin{array}{c} n \\ x \end{array} \right) p^x(1-p)^{n-x}\)
+
+Substitute f(x)in g(t):
+
+\(g(t) = \sum^n_{j=0} e^{tx}\left( \begin{array}{c} n \\ x \end{array} \right) p^x(1-p)^{n-x}\)
+
+\(g(t) = \sum^n_{j=0} \left( \begin{array}{c} n \\ x \end{array} \right) (pe^t)^x(1-p)^{n-x}\)
+
+\(g(t) = ((1-p) + pe^t)^n\)
+
+First derivative:
+
+\(g'(t) = \frac{dg(t)}{dt} = n((1-p) + pe^t)^{n-1}pe^t \)
+
+Find expected value E(x) by 1st derivative of MGF at t=0:
+
+\(E(x) = \frac{dg(0)}{dt} = np((1-p) + p)^{n-1} = np\)
+
+Find variance V(x) by 2nd derivative of MGF at t=0:
+
+\(g'(t) = npe^t((1-p) + pe^t)^{n-1} \)
+
+\(g''(t) = \frac{d^2M_x(t)}{dt^2} = npe^t((n-1)((1-p) + pe^t)^{n-2}pe^t) + g'(t)\)
+
+\(g''(t) = npe^t((n-1)((1-p) + pe^t)^{n-2}pe^t) + g'(t)\)
+
+when t=0:
+
+\(g''(0) = np(n-1)[1-p+pe^0]^{n-2}pe^0e^0 + g'(t)\)
+
+\(g''(0) = np^2(n-1) + g'(t) = np^2(n-1) + np\)
+
+Variance: \(V(x) = E(x^2) - (E(x))^2\)
+
+\(V(x) = np^2(n-1) + np - n^2p^2 = n^2p^2 -np^2 +np - n^2p^2 = np - np^2 = np(1-p)\)
+
+# 3. Calculate the expected value and variance of the exponential distribution using the moment generating function
+
+Moment generating function:
+
+\(g(t) = E(e^{tx}) = \sum^\infty_{x=0} e^{tx}f(x))\)
+
+Exponential distribution function:
+
+\(f(x) = \lambda e^{-\lambda x}\)
+
+Substitute f(x)in g(t):
+
+\(g_x(t) = \int_{0}^{\infty} e^{tx}\lambda e^{-\lambda x} dx\)
+
+\(g_x(t) = \lambda \int_{0}^{\infty}e^{(t-\lambda) x} dx)\)
+
+\(g_x(t) = \frac{\lambda}{t-\lambda}\)
+
+First derivative:
+
+\(g_x^{'}(t) = \frac{\lambda}{(\lambda - t)^2}\)
+
+Find expected value E(x) by 1st derivative of MGF at t=0:
+
+\(E(x) = {g_x}^{'}(0) = \frac{\lambda}{(\lambda)^2} = \frac{1}{\lambda}\)
+
+Find variance V(x) by 2nd derivative of MGF at t=0:
+
+\(g_x^{''}(t) = \frac{2\lambda}{(\lambda - t)^3}\)
+
+\(E(X^2) = {g_x}^{''}(0) = \frac{2\lambda}{\lambda^3} = \frac{2}{\lambda^2}\)
+
+Variance: \(V(x) = E(x^2) - (E(x))^2\)
+
+\(V(X) = \frac{2}{\lambda^2} - \frac{1}{\lambda^2} = \frac{1}{\lambda^2}\)
