@@ -1,0 +1,66 @@
+---
+title: "TzeFungLung_Assign11"
+author: "jim lung"
+date: "11-09-2017"
+output: html_document
+---
+
+# Data 605 Assignment 11
+
+## Using the ¡§cars¡¨ dataset in R, build a linear model for stopping distance as a function of speed and replicate the analysis of your textbook chapter 3 (visualization, quality evaluation of the model, and residual analysis.)
+
+
+```{r}
+# cars data
+head(cars)
+```
+
+```{r}
+summary(cars)
+```
+
+## visualization
+
+```{r}
+carslm <- lm(cars$dist ~ cars$speed)
+plot(cars$speed, cars$dist, main = "Comparsion between speed and distance", xlab = "speed", ylab="distance")
+abline(carslm)
+```
+
+## Linear Regression Model
+
+```{r}
+# correlation
+cor(cars$dist,cars$speed)
+```
+It is a strong uphill (positive) linear relationship.
+
+
+```{r}
+# linear regression model
+carslm <- lm(cars$dist ~ cars$speed)
+summary(carslm)
+```
+
+When Y is stop distance and X is spreed, the linear model is as follow:
+$Y = -17.5791 + 3.9324 X$
+
+It is a a statistically significant predictor of evaluation score with p-value less than 0.05.
+For Multiple R-squared, the model is around 65% fits the data.
+
+```{r}
+# histogram of residuals
+hist(carslm$residuals)
+```
+
+Histogram of residual plot appear to be near normally distributed.
+
+```{r}
+# qqplot
+qqnorm(carslm$residuals)
+qqline(carslm$residuals)
+```
+
+Q-Q plot are not uniformly scattered and have deviation at lower and quantiles. The residuals does not show randomly.
+
+
