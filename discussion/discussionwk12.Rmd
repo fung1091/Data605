@@ -1,0 +1,73 @@
+---
+title: "discussionwk12"
+author: "jim lung"
+date: "11-14-2017"
+output: html_document
+---
+
+# Data 605 Discussion week 12
+
+## Using R, build a multiple regression model for data that interests you.  Include in this model at least one quadratic term, one dichotomous term, and one dichotomous vs. quantitative interaction term.  Interpret all coefficients. Conduct residual analysis.  Was the linear model appropriate? Why or why not?
+
+### Data:
+New York Air Quality Measurements
+
+Ozone	numeric	Ozone (ppb)
+Solar.R	numeric	Solar R (lang)
+Wind	numeric	Wind (mph)
+Temp	numeric	Temperature (degrees F)
+Month	numeric	Month (1--12)
+Day	numeric	Day of month (1--31)
+
+
+```{r}
+#forest <- read.csv("forestfires.csv")
+head(airquality)
+summary(airquality)
+```
+
+```{r}
+pairs(airquality)
+```
+
+## Multiple Regression Model
+
+To predict numeric	Ozone (ppb)
+
+one quadratic term: Temp ^2
+
+
+```{r}
+# create quadratic term
+temp_squared <- (airquality$Temp)^2
+
+# create model
+airqualitylm <- lm(airquality$Ozone ~ temp_squared + airquality$Solar.R + airquality$Wind, data = airquality)
+
+```
+
+
+
+```{r}
+summary(airqualitylm)
+```
+
+The model is as follows: Ozone = $Ozone = -5.718665 + 0.011208*Temp^{2} + 0.059356*Solar - 3.218499*Wind$
+
+It is a a statistically significant predictor of evaluation score with p-value less than 0.05. For Multiple R-squared, the model is around 61% fits the data.
+
+### Residual Analysis
+
+```{r}
+plot(airqualitylm$fitted.values, airqualitylm$residuals)
+abline(0,0)
+```
+
+```{r}
+# qqplot
+qqnorm(airqualitylm$residuals)
+qqline(airqualitylm$residuals)
+```
+
+Q-Q plot are not uniformly scattered and have deviation at lower and quantiles. The residuals does not show randomly.
+

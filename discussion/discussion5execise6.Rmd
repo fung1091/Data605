@@ -1,0 +1,43 @@
+---
+title: "discussion5execise6"
+author: "jim lung"
+date: 09-29-2017
+output: html_document
+---
+
+# 1.1 exercise 6
+
+In Las Vegas, a roulette wheel has 38 slots numbered 0, 00, 1, 2, . . . , 36. The
+0 and 00 slots are green and half of the remaining 36 slots are red and half
+are black. A croupier spins the wheel and throws in an ivory ball. If you bet
+1 dollar on red, you win 1 dollar if the ball stops in a red slot and otherwise
+you lose 1 dollar. Write a program to find the total winnings for a player who
+makes 1000 bets on red.
+
+
+```{r}
+bets <- function(plays){
+  dollars <- 0       # start from zero
+  
+for (i in 1:plays){
+  spins <- sample(1:38, 1, replace = TRUE)
+
+  for (count in spins){
+    
+    if(count <= 18){
+    
+      dollars[i+1] <- dollars[i] + 1
+    } else {
+      dollars[i+1] <- dollars[i] - 1
+    }
+  }
+  
+}
+  return(dollars)
+}
+# Total wining for 1000 bets
+
+bets(1000)
+
+
+```

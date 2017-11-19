@@ -1,0 +1,31 @@
+---
+title: "discussion6Ch3_2Exe20"
+author: "jim lung"
+date: "10-6-2017"
+output: html_document
+---
+
+# Discussion 6
+
+# Chapter 3.2 Exercise 20
+
+## 20. A six-card hand is dealt from an ordinary deck of cards. Find the probability that:
+
+### a) All six cards are hearts.
+
+$$\binom{13}{6} / \binom{52}{6}$$
+= 1716 / 20358520 
+= 0.000084
+
+### b) There are three aces, two kings, and one queen
+$$\binom{4}{3}\binom{4}{2}\binom{4}{1} / \binom{52}{6}$$
+= 4x6x4 / 20358520
+= 0.000047
+
+### c) There are three cards of one suit and three of another suit.
+
+$$\binom{4}{2}  . \left (\binom{13}{3}\binom{13}{3}/ \binom{52}{6} \right )$$
+= 6 x ( 286 x 286 / 20358520 )
+= 0.0241
+
+

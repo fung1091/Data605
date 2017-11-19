@@ -1,0 +1,34 @@
+---
+title: "discussion4C40"
+author: "jim lung"
+date: "09-20-2017"
+output: html_document
+---
+
+# Week 4 Discussion
+
+# LT.C40
+
+If $T: \mathbb{C}^{2} -> \mathbb{C}^{2}$ 
+
+satisfies
+
+
+$T{({\lbrack\begin{array}{c}2\\[4pt]1\end{array}\rbrack})}={\lbrack\begin{array}{c}3\\[4pt]4\end{array}\rbrack}  and  T{({\lbrack\begin{array}{c}1\\[4pt]1\end{array}\rbrack})}={\lbrack\begin{array}{c}-1\\[4pt]2\end{array}\rbrack}$
+
+, find $T{({\lbrack\begin{array}{c}4\\[4pt]3\end{array}\rbrack})}$
+
+
+$${\lbrack\begin{array}{c}4\\[4pt]3\end{array}\rbrack}={\lbrack\begin{array}{c}2\\[4pt]1\end{array}\rbrack}+2{\lbrack\begin{array}{c}1\\[4pt]1\end{array}\rbrack}$$
+
+
+$$T\left ( \begin{bmatrix} 4\\ 3 \end{bmatrix} \right ) = T\left ( \begin{bmatrix} 2\\1 \end{bmatrix} + 2 \begin{bmatrix} 1\\ 1 \end{bmatrix}\right )$$
+
+
+$$T\left ( \begin{bmatrix} 2\\ 1 \end{bmatrix} \right ) + 2T\left ( \begin{bmatrix} 1\\1 \end{bmatrix} \right )$$
+
+
+$$= \begin{bmatrix} 3\\ 4 \end{bmatrix} + 2 \begin{bmatrix} -1\\2 \end{bmatrix}$$
+
+
+$$= \begin{bmatrix} 1\\ 8 \end{bmatrix}$$

@@ -1,0 +1,36 @@
+---
+title: "discussion7"
+author: "jim lung"
+date: "10-13-2017"
+output: html_document
+---
+# Discussion 7 # 5.1.38
+
+## 38 A manufactured lot of buggy whips has 20 items, of which 5 are defective. A random sample of 5 items is chosen to be inspected. Find the probability that the sample contains exactly one defective item
+
+## (a) if the sampling is done with replacement.
+
+```{r}
+X <- 5
+Y <- 1
+Z <- factorial(X)/(factorial(Y)*factorial(X-Y))
+
+P1 <- Z * (5/20)^1 *(15/20)^4
+P1
+```
+
+## (b) if the sampling is done without replacement
+
+```{r}
+# sampling is done without replacement
+X1 <- 20-5
+Y1 <- 5-1
+Z1 <- factorial(X1)/(factorial(Y1)*factorial(X1-Y1))
+
+X2 <- 20
+Y2 <- 5
+Z2 <- factorial(X2)/(factorial(Y2)*factorial(X2-Y2))
+
+P2 <- Z * Z1 / Z2
+P2
+```

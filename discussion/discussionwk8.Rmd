@@ -1,0 +1,56 @@
+---
+title: "discussionwk8"
+author: "jim lung"
+date: "10-18-2017"
+output: html_document
+---
+
+# Data 605 discussion week 8 - # 8.2.1
+
+## 1 Let X be a continuous random variable with mean £g = 10 and variance £m^2 = 100/3. Using Chebyshev¡¦s Inequality, find an upper bound for the following probabilities.
+
+$$mean £g = 10$$
+$$variance £m^2 = 100/3$$
+$$Standard deviation £m = sqrt (100/3)$$
+
+
+\[P(|X-\mu|\geq k\sigma)\leq\frac{1}{k^2}\]
+
+
+### (a) P( | X - 10 | >= 2)
+
+\[ k \sigma=2 \]
+\[  k= \frac{2}{\sqrt{100/3}} \]
+\[ P(|X - 10|\geqslant 2) = \frac{1}{k^{_{2}}} = 8.3333 \approx 1\] 
+
+
+### (b) P( | X - 10 | >= 5)
+\[ k \sigma=5 \]
+\[ k= \frac{5}{\sqrt{100/3}} \]
+\[ P(|X - 10|\geqslant 5) = \frac{1}{k^{_{2}}} = 1.3333 \approx 1$ \]
+
+### (c) P( | X - 10 | >= 9)
+\[ k \sigma=9 \]
+\[ k= \frac{9}{\sqrt{100/3}} \]
+\[ P(|X - 10|\geqslant 9) = \frac{1}{k^{_{2}}} = 0.4115 \]
+
+### (d) P( | X - 10 | >= 20)
+\[ k \sigma=20 \]
+\[ k= \frac{20}{\sqrt{100/3}} \]
+\[ P(|X - 10|\geqslant 20) = \frac{1}{k^{_{2}}} = 0.0833$ \]
+
+
+Test:
+```{r}
+u <- 10
+o <- sqrt(100/3)
+
+x1 <-c(2, 5, 9, 20)
+
+k <- (x1 )/o
+
+p1 <-  round(1/(k^2), 4)
+p1
+
+```
+

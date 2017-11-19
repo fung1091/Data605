@@ -1,0 +1,29 @@
+---
+title: "discussion3EE.C12"
+author: "jim lung"
+date: "09-14-2017"
+output: html_document
+---
+
+##EE.C12
+#Find the characteristic polynomial of the matrix  
+\[A= \begin{bmatrix} 1 &2 & 1 & 0\\ 1& 0 & 1 & 0\\ 2& 1& 1 & 0\\ 3& 1& 0 & 1 \end{bmatrix}\]
+
+
+\[A= \begin{bmatrix} 1 &2 & 1 & 0\\ 1& 0 & 1 & 0\\ 2& 1& 1 & 0\\ 3& 1& 0 & 1 \end{bmatrix} ; I =\begin{bmatrix} 1 & 0 & 0 & 0\\ 0 & 1 & 0 &0 \\ 0 & 0 & 1 & 0\\ 0& 0 & 0 & 1 \end{bmatrix}\]
+
+pA(£f) = det(A???£fI4)
+
+\[\mathbf{pA({\lambda})} = \mathbf{det(\left[\begin{matrix} 1 & 2 & 1 & 0 \\ 1 & 0 & 1 & 0 \\ 2 & 1 & 1 & 0 \\ 3 & 1 & 0 & 1\end{matrix}\right] + (-{\lambda} \left[\begin{matrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0\\ 0 & 0 & 0 & 1\end{matrix}\right]))}\]
+
+\[\mathbf{pA({\lambda})} = \mathbf{det(\left[\begin{matrix} 1-\lambda & 2 & 1 & 0 \\ 1 & 0-\lambda & 1 & 0 \\ 2 & 1 & 1-\lambda & 0 \\ 3 & 1 & 0 & 1-\lambda \end{matrix}\right] }\]
+
+\[=(1-\lambda )\begin{vmatrix} 0-\lambda & 1 & 0\\ 1& 1-\lambda & 0\\ 1& 0& 1-\lambda \end{vmatrix}+2\begin{vmatrix} 1 & 1 & 0\\ 2 & 1-\lambda & 0\\ 3 & 0 & 1-\lambda \end{vmatrix}+1\begin{vmatrix} 1 & 0-\lambda & 0\\ 2 & 1 & 0\\ 3 & 1 & 1-\lambda \end{vmatrix}\]
+
+Solution by r:
+```{r}
+library(pracma)
+A <- matrix(c(1,1,2,3,2,0,1,1,1,1,1,0,0,0,0,1), nrow = 4, ncol = 4, byrow = TRUE)
+charpoly(A)
+
+```

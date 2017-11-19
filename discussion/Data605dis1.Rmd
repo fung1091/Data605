@@ -1,0 +1,39 @@
+---
+title: "Data605dis1"
+author: "jim lung"
+date: "2017¦~8¤ë30¤é"
+output: html_document
+---
+# WILA.C10  
+```{r}
+#y=Xb
+
+#b=X^(-1)y
+
+mymat=matrix(c(7,6,2,6,4,5,2,5,8),nrow=3)
+
+y=c(3.69,3.86,4.45)
+
+xinv=solve(mymat) #inverts
+xinv
+b=xinv%*%y
+b
+```
+
+# SSLE.C31
+```{r}
+library(matlib) 
+
+# 3x+2y=1
+# x-y=2
+# 4x-2y=2
+
+A <- matrix(c(3,1,4,2,-1,-2), 3, 2)
+B <- c(1,2,2)
+#showEqn(A, b)
+
+x <- MASS::ginv(A) %*% B
+x
+
+
+```

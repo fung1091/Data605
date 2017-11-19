@@ -1,0 +1,55 @@
+---
+title: "discussionwk9"
+author: "jim lung"
+date: "10-26-2017"
+output: html_document
+---
+
+# Data 605 discusstion wk9 # 9.2.7
+
+## 7. A surveying instrument makes an error of -2, -1, 0, 1, or 2 feet with equal  probabilities when measuring the height of a 200-foot tower.
+
+## a) Find the expected value and the variance for the height obtained using this instrument once.
+
+X = height obtained
+Y = error
+X = 200 + Y
+
+\(E(Y) = \frac{1}{5} (-2+-1+0+1+2) = 0\)
+E(X) = 200 + E(Y) = 200
+The expected value is 200 for height obtained.
+
+\(V(Y) = \frac{1}{5} (-2^{2}-1^{2}+0^{2}+1^{2}+2^{2}) = \frac{10}{5} =2\)
+V(X) = V(Y) = 2
+
+The variance is 2.
+
+## b) Estimate the probability that in 18 independent measurements of this tower, the average of the measurements is between 199 and 201, inclusive.
+
+\(S_{18}=X_{1}+X_{2}+X_{3}...X_{18}\)
+
+\(average height=\frac{S^{n}}{n}\)
+
+```{r}
+E <- 200
+V <- sqrt((1/18)*2)
+V
+#P(199<=Sn*<=201)
+
+#P(199<=Sn*)
+
+P199 <- ((199-E)/V)
+P199
+
+#P(Sn*<=201)
+P201 <- ((201-E)/V)
+P201
+(0.5-dnorm(P199))*2
+```
+
+probability in 18 independent measures of tower is 0.99113.
+
+```{r}
+dnorm(3)
+dnorm(-3)
+```
