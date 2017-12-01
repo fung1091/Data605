@@ -1,0 +1,24 @@
+---
+title: "discussionwk14"
+author: "jim lung"
+date: "11-30-2017"
+output: html_document
+---
+
+# Data 605 discussion week 14 #8.8.25
+
+Exercises 25 ¡V 30, use the Taylor series given in Key Idea 32 to create the Taylor series of the given func??ons.
+
+## 25. 
+$f(x) = cos (x^2)$
+
+
+Key Idea 32 informs us that:
+
+$cos(x) = \sum_{\infty }^{n=0}(-1)^{n}\frac{x^{2n}}{(2n)!}$
+
+$= 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \frac{x^6}{6!} + ....$
+
+$cos(x^2) = \sum_{\infty }^{n=0}(-1)^{n}\frac{(x^2)^{2n}}{(2n)!}$
+
+$= 1 - \frac{x^4}{2!} + \frac{x^8}{4!} - \frac{x^12}{6!} + ....$
