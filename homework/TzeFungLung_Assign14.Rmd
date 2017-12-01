@@ -1,0 +1,114 @@
+---
+title: "TzeFungLung_Assign14"
+author: "jim lung"
+date: "11-30-2017"
+output: html_document
+---
+
+# Data 605 Assignment 14
+
+Taylor Series expansions of popular functions:
+
+## 1.
+
+$$f\left( x \right) = \frac { 1 }{ (1-x) } $$ 
+
+$$f\left( x \right) \quad =\quad \sum _{ n=0 }^{ \infty }{ \frac { { f }^{ (n) }(a) }{ n! } { (x-a) }^{ n } }$$
+
+$$f(a)\quad +{ \quad f }^{ (1) }(a)(x-a)\quad +\quad \frac { { f }^{ (2) } }{ 2! } (a)(x-a)\quad +\quad ...$$
+
+
+
+For $$f\left( x \right) = \frac { 1 }{ (1-x) } $$
+
+Derivatives are:
+
+$f(a)\quad =\quad \frac { 1 }{ 1\quad -\quad a }$; $\quad\quad f(0) = 1$
+
+${ f }^{ \prime }(a)\quad =\quad \frac { 1 }{ { (1-a) }^{ 2 } }$; $\quad\quad f^{(1)}(0) = 1$
+
+${ f }^{ \prime \prime }(a)\quad =\quad \frac { 2 }{ { (1-a) }^{ 3 } }$; $\quad\quad f^{(2)}(0) = 2$
+
+${ f }^{ \prime \prime \prime}(a)\quad =\quad \frac { 6 }{ { (1-a) }^{ 4 } }$; $\quad\quad f^{(3)}(0) = 6$
+
+${ f }^{(4)}(a)\quad =\quad \frac { 24 }{ { (1-a) }^{ 5 } }$; $\quad\quad f^{(4)}(0) = 24$
+
+Plug in the relevant expressions into formula for Taylor Series expansion:
+
+$f(a) + {{ f }^{ \prime }}(a)(x-a) + \frac{{ f }^{ \prime \prime }}{2!}(x-a) + \frac {{ f }^{ \prime \prime \prime }}{3!}(x - a) + \frac {f^{(4)}}{4!}(x - a) +...$
+
+$= 1 + 1x + \frac{2}{2!}x^2 + \frac{6}{3!}x^3 + \frac{24}{4!}x^4 +...$
+
+which reduces to,
+
+$1 + x + x^2 + x^3 + x^4 + .......
+
+Test:
+```{r}
+library(pracma)
+equation <- function(x) {1/(1-x)}
+p <- taylor(equation, x0 = 0, n = 4)
+p
+
+```
+
+## 2. 
+
+For $$f(x) = e^x$$
+
+Derivatives are,
+
+$f(a) \quad= \quad { e }^{ a }$; $\quad\quad f(0) = 1$
+
+${ f }^{ \prime }(a)\quad =\quad { e }^{ a }$; $\quad\quad { f }^{ \prime }(0) = 1$
+
+${ f }^{ \prime \prime }(a)\quad =\quad { e }^{ a }$; $\quad\quad { f }^{ \prime \prime }(0) = 1$
+
+${ f }^{ \prime \prime \prime }(a)\quad =\quad { e }^{ a }$; $\quad\quad { f }^{ \prime \prime \prime }(0) = 1$
+
+$f^{(4)}(a)\quad = \quad { e }^{ a }$; $\quad\quad f^{(4)}(0) = 1$
+
+Therefore, plugging in Taylor Theorem Polynomial,
+
+$f(a) + {{ f }^{ \prime }}(a)(x-a) + \frac{{ f }^{ \prime \prime }}{2!}(x-a) + \frac {{ f }^{ \prime \prime \prime }}{3!}(x - a) + \frac {f^{(4)}}{4!}(x - a) +...$
+
+$= 1 + x + \frac{x^2}{2} + \frac{x^3}{6} + \frac{x^4}{24} + ...$
+
+
+```{r}
+equation <- function(x) {exp(x)}
+p <- taylor(equation, x0 = 0, n = 4)
+p
+
+```
+
+## 3. 
+For $$f(x) = ln(1 + x)$$
+
+Derivatives are,
+
+$f(a) \quad= \quad ln(1+a)$; $\quad= \quad f(0) = 0$
+
+${ f }^{ \prime }(a) \quad= \quad \frac{1}{1+a}$; $\quad= \quad { f }^{ \prime }(0) = 1$
+
+${ f }^{ \prime \prime }(a) \quad= \quad \frac{-1}{(1+a)^2}$; $\quad= \quad { f }^{ \prime \prime }(0) = -1$
+
+${ f }^{ \prime \prime \prime }(a) \quad= \quad \frac{2}{(1+a)^3}$; $\quad= \quad { f }^{ \prime \prime \prime } (0) = 2$
+
+$f^{(4)}(a) \quad= \quad \frac{-6}{(1+a)^4}$; $\quad= \quad f^{(4)}(0) = -6$
+
+Therefore, plugging in Taylor Theorem Polynomial,
+
+$f(a) + {{ f }^{ \prime }}(a)(x-a) + \frac{{ f }^{ \prime \prime }}{2!}(x-a) + \frac {{ f }^{ \prime \prime \prime }}{3!}(x - a) + \frac {f^{(4)}}{4!}(x - a) +...$
+
+$=x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} +...$
+
+Test:
+```{r}
+equation <- function(x) {log(1+x)}
+p <- taylor(equation, x0 = 0, n = 4)
+p
+
+```
+
+
