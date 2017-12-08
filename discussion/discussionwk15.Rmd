@@ -1,0 +1,40 @@
+---
+title: "discussionwk15"
+author: "jim lung"
+date: "12-06-2017"
+output: html_document
+---
+
+# Data 605 Discussion week 15
+
+## 12.5.9
+
+Solve $\frac{dy}{dt}$ , when $t =\frac{\pi}{4}$:
+
+$z = 5x + 2y,$
+
+$x = 2 cos t + 1, $
+
+$y = sin t - 3,$
+
+$f_x(x,y) = 5 $
+
+$f_y(x,y) = 2 $
+
+$\frac{dx}{dt} = -2 sin\ t$
+
+$\frac{dy}{dt} = cos\ t$
+
+$\frac{dz}{dt} = 5(-2 sin\ t) + 2(cos\ t) = -10 sin\ t + 2 cos\ t$
+
+when $\frac{\pi}{4}$:
+
+```{r}
+t <- pi/4
+dz <- -10*sin(t) + 2*cos(t)
+dz
+
+```
+
+
+
