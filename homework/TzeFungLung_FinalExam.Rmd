@@ -1,0 +1,413 @@
+---
+title: "TzeFungLung_FinalExam"
+author: "jim lung"
+date: "12-10-2017"
+output: html_document
+---
+
+# DATA 605 Final Exam
+
+## Dataset
+Website: https://www.kaggle.com/c/house-prices-advanced-regression-techniques provides a dataset about 1460 objects of 80 variables that With 79 explanatory variables describing every aspect of residential homes in Ames, Iowa, to predict the final saleprice of each home.
+
+```{r load-data}
+# read in training data, use ID column as row names
+train <- read.csv('train.csv', row.names = 1)
+head(train)
+```
+
+Final sale price (in dollars) is defined as the dependent variable $Y$ and the above grade living area (in square feet) is defined as the independent variable $X$.
+
+
+```{r}
+# Choose my quantitative independent variable to be Overall Quality
+X <- train$GrLivArea
+
+# Choose Sale Price as my dependent variable as per the Kaggle Competition
+Y <- train$SalePrice
+
+# Let's get the median and mean to show it is skewed to the right
+summary(X)
+
+```
+
+
+```{r}
+library(ggplot2)
+# Plot Overall Quality to visually show it is skewed to the right
+ggplot(data = train) + geom_density(aes(x=OverallQual), fill="blue") + labs(x="Overall Quality") + ggtitle("Overall Quality Density") + theme_light()
+
+```
+
+
+```{r}
+# We have the quartiles for X above, here we get them for Y
+summary(Y)
+```
+
+¡§x¡¨ is estimated as the 1d quartile of the X variable: x = 1130
+
+¡§y¡¨ is estimated as the 2d quartile of the Y variable: y = 163,000
+
+```{r}
+# we count the number of rows with SalesPrice > 163,000
+sum(Y > 163000)
+
+# Total number of rows
+length(Y)
+
+length(X)
+
+```
+
+```{r}
+# Rows where both Y > y and X > x
+sum(Y > 163000 & X > 1130)
+
+```
+
+```{r}
+Q1x <- quantile(X,0.25)
+Q1x
+Q2y <- quantile(Y,0.5)
+Q2y
+```
+
+### a) P(X > x | Y > y)
+
+```{r}
+# The probability P(X>x | Y>y)
+(sum(Y > Q2y & X > Q1x) / length(X)) / (sum(Y > Q2y) / length(Y))
+
+```
+
+### b) P(X > x, Y > y)
+
+```{r}
+# The probability P(X>x and Y>y)
+sum(X > Q1x & Y > Q2y) / length(X)
+```
+
+### c) P(X < x | Y > y)
+
+```{r}
+# The probability P(X<x | Y>y)
+(sum(Y > Q2y & X < Q1x) / length(X)) / (sum(Y > Q2y) / length(Y))
+
+```
+
+## P(X|Y)=P(X)P(Y)
+Does splitting the training data in this fashion make them independent? In other words, does P(X|Y)=P(X)P(Y))?   Check mathematically, and then evaluate by running a Chi Square test for association.  You might have to research this.
+
+### mathematical method
+
+```{r}
+# P(x) = P(above the 1d quartile for X)
+px <- sum(X > Q1x) / length(X)
+px
+
+# P(Y) = P(above the 2d quartile for Y)
+py <- sum(Y > Q2y) / length(Y)
+py
+
+# P(x)*P(Y)
+pxy <- px*py
+pxy
+
+# P(X|Y) = P(Y and X) / P(Y)
+pxxyy <- (sum(X > Q1x & Y > Q2y) / length(X)) / py
+pxxyy
+```
+
+$P(A | B) \ne P(A) P(B)$, which implies that my variables are not independent, so splitting the data in this fashion does not make them independent.
+
+### Chi Square test
+The Chi Square Test, tests the hypothesis of whether the grade living area (in square feet) is independent of the Sale Price. We could debate a 5% to 1% significance level, but in this case that¡¦s not necessary. With a p-value of well under 1% we reject the null hypothesis that the grade living area (in square feet) is independent of the Sale Price of a house.
+
+
+```{r}
+if (!require(MASS)) install.packages("MASS")
+library(MASS)
+
+tbl <- table(train$GrLivArea > Q1x, train$SalePrice > Q2y)
+chisq.test(tbl)
+
+```
+
+
+## Descriptive and Inferential Statistics. 
+Provide univariate descriptive statistics and appropriate plots for both variables. Provide a scatterplot of X and Y.  Transform both variables simultaneously using Box-Cox transformations. You might have to research this.
+
+### Dataset
+Train data set we can see from running dim() and str() below that we have 1,460 observations and 80 variables
+
+Summary statistics for $X$ and $Y$ are provided in the table below:
+```{r summary}
+library(pander)
+
+# prepare summary table supplemented with standard deviation
+sum_tbl <- rbind(c(summary(X), 'Std. Dev.'=round(sd(X), 0)),
+                 c(summary(Y), 'Std. Dev.'=round(sd(Y), 0)))
+row.names(sum_tbl) <- c('X', 'Y')
+pander(sum_tbl)
+```
+
+The plots below show the joint distributions of the two variables
+
+```{r}
+library(ggplot2)
+library(scales)
+# scatter of X & Y
+pscat <- ggplot(data.frame(X, Y), aes(X, Y / 1000)) + 
+  geom_point(alpha = 0.25) +
+  scale_x_continuous('Above Grade Living Area [square feet]') + 
+  scale_y_continuous('Sale Price [thousands]', labels = dollar)
+# histogram of X
+px <- ggplot(data.frame(X), aes(X, ..count.. / sum(..count..))) + 
+  geom_histogram(alpha = 0.5, col = 'black', binwidth = 200) +
+  scale_x_continuous(name = NULL, labels = NULL) +
+  scale_y_continuous(name = '', labels = percent)
+# histogram of Y
+py <- ggplot(data.frame(Y), aes(Y, ..count.. / sum(..count..))) + 
+  geom_histogram(alpha = 0.5, col = 'black', binwidth = 25000) + 
+  scale_x_continuous(name = NULL, labels = NULL) + 
+  scale_y_continuous(name = '', labels = percent) +
+  coord_flip()
+
+# combined plots
+library(grid)
+library(gridExtra)
+grid.arrange(px, rectGrob(NA), pscat, py,
+             nrow=2, widths = c(0.8, 0.2), heights = c(0.2, 0.8),
+             top = 'Histograms and Scatterplot of X & Y Variables')
+```
+
+### Scatterplot X and Y
+
+Below is a scatterplot of grade living area (in square feet) versus Sale Price. I overlayed the regression line and the lighter band around the line is the 95% confidence interval.
+
+```{r}
+# Plot Overall Quality versus Sales Price and overlay a regression line
+ggplot(train, aes(x = GrLivArea, y = SalePrice)) + geom_point(color="red") + labs(x="grade living area", y = "Sale Price") + ggtitle("grade living area vs. Sales Price") + geom_smooth(method = "lm", se = TRUE) + theme_light()
+
+```
+
+### 95% Confidence Interval
+Provide a 95% CI for the difference in the mean of the variables.
+
+We show below a 95% confidence that the difference in the means of x and y will be between 175.3K and 183.5K
+```{r}
+# Run the T test
+t.test(Y, X)
+
+# The assumption for the test is that both groups are sampled from normal distributions with equal variances
+diffmean <- t.test(X, Y, paired = TRUE)$conf.int
+diffmean
+```
+
+### Correlation Matrix
+
+Derive a correlation matrix for two of the quantitative variables you selected. Test the hypothesis that the correlation between these variables is 0 and provide a 99% confidence interval.
+
+```{r}
+# Setup and run correlation test
+data <- data.frame(X, Y)
+cm <- cor(data)
+cm
+```
+
+```{r}
+cor.test(Y, X, conf.level = 0.99)
+```
+
+### Analysis
+
+The Pearson correlation is 0.7086. The Pearson correlation coefficient can take a range of values from +1 to -1. A value of 0 indicates that there is no association between the two variables. A value greater than 0 indicates a positive association; that is, as the value of one variable increases, so does the value of the other variable. This test result is a strong indication of a correlation between grade living area and Sale Price.
+
+In a similar way the T-test or the difference in the means also indicates an association between grade living area and Sale Price, because the true difference in means is not equal to 0
+
+## Linear Algebra and Correlation
+
+Using at least three untransformed variables, build a correlation matrix.  Invert your correlation matrix. (This is known as the precision matrix and contains variance inflation factors on the diagonal.) Multiply the correlation matrix by the precision matrix, and then multiply the precision matrix by the correlation matrix.
+
+Assuming our square correlation matrix is invertible, the process outlined above should create the identity matrix due to $AA^{-1} = A^{-1}A = I$
+
+```{r}
+# Correlaiton Matrix
+cm
+# #Invert Correlaiton Matrix
+pm <- solve(cm)
+pm
+```
+
+```{r}
+# Multiply the correlation matrix by the precision matrix# Multiply the correlation matrix by the precision matrix
+#A*A^-1
+AAn1 <- cm%*%pm
+AAn1
+
+# Multiply the precision matrix by the correlation matrix
+#A^-1*A
+An1A <- pm %*% cm
+An1A
+```
+
+## Calculus-Based Probability & Statistics
+
+Many times, it makes sense to fit a closed form distribution to data.  For your non-transformed independent variable, location shift (if necessary)  it so that the minimum value is above zero.  Then load the MASS package and run fitdistr to fit a density function of your choice. 
+
+### Probability
+
+Find the optimal value of £f£f for this distribution, and then take 1000 samples from this exponential distribution using this value (e.g., rexp(1000, £f£f)). Plot a histogram and compare it with a histogram of your original variable.
+
+```{r}
+# Run fitdistr to fit an exponential probability density function
+ep <- fitdistr(train$GrLivArea, "exponential")
+ep
+```
+
+```{r}
+# Take 1000 samples from the exponential distribution, set.seed is so percentiles below stay the same
+set.seed(1)
+esamp <- rexp(1000, 6.598640e-04)
+
+# Plot a histogram and compare it with a histogram of your original variable
+hist(esamp)
+```
+
+```{r}
+hist(train$GrLivArea)
+```
+
+### Exponential PDF Percentiles
+using the cumulative distribution function (CDF) to find the 5th and 95th percentiles:
+
+```{r}
+quantile(esamp, probs=c(.05,.95))
+```
+
+To generate a 95% confidence interval from the empirical data:
+Confidence Interval as: CI = Sample Mean ¡Ó¡Ó Standard Error
+
+
+lower or left side of the interval:
+```{r}
+# The lower or left side of the interval for GrLivArea = mean - error
+mean(train$GrLivArea) - qnorm(0.95) * sd(train$GrLivArea) / sqrt(length(train$GrLivArea))
+
+```
+
+```{r}
+# The upper or right side of the interval for GrLivArea = mean + error
+mean(train$GrLivArea) + qnorm(0.95) * sd(train$GrLivArea) / sqrt(length(train$GrLivArea))
+```
+
+```{r}
+# Find the empirical 5th percentile and 95th percentile of the data
+quantile(train$GrLivArea, probs=c(.05,.95))
+```
+
+For grade living area, 95% CI is 1492 < X < 1538.
+
+5th percentile is 848 and 95th percentile is 2466.
+
+## Modeling
+In order to predict the sale price of houses using information about the characteristics of a house, regression models are constructed and their results entered into the Kaggle competition.
+  
+### Bayesian Information Criterion
+The model considers only the numeric variables examined in previous section.  The `leaps` package is utilized to determine the minimum Bayesian Information Criterion (BIC) to select the best model as shown below.
+
+```{r}
+library(dplyr)
+
+# first variable is categorical values stored by numeric key; convert to factor
+train$MSSubClass <- factor(train$MSSubClass)
+# impute LotFrontage and MasVnrArea with zero
+train$LotFrontage[is.na(train$LotFrontage)] <- 0
+train$MasVnrArea[is.na(train$MasVnrArea)] <- 0
+# impute GarageYrBlt with delta between YearBuilt
+train$GarageYrBlt[is.na(train$GarageYrBlt)] <- 
+  train$YearBuilt[is.na(train$GarageYrBlt)] +
+  median(train$GarageYrBlt - train$YearBuilt, na.rm = TRUE)
+# gather all explanatory variables and exclude non-numeric variables
+
+pca_data <- train[, sapply(train, is.numeric)] %>% select(-SalePrice)
+```
+```
+
+```{r BIC-model-prep}
+#library(dplyr)
+# gather all explanatory variables and exclude non-numeric variables
+#pca_data <- train[, sapply(train, is.numeric)] %>% select(-SalePrice)
+
+# use numeric variables from PCA; include target variable
+model_data <- cbind(pca_data, SalePrice = train$SalePrice)
+
+# use regsubsets to get best subsets per number of variables
+library(leaps)
+regfit <- regsubsets(SalePrice~., data = model_data, nvmax = 20)
+
+```
+
+```{r BIC-model}
+reg.summary <- summary(regfit)
+# plot variables vs BIC & BIC vs # variables
+par(mfrow = c(1, 2), mar=c(1,1,1,1))
+plot(regfit, scale = "bic", main = "Predictor Variables vs. BIC")
+plot(reg.summary$bic, xlab = "Number of Predictors", ylab = "BIC", 
+     type = "l", main = "Best Subset Selection Using BIC")
+# annotate lowest BIC
+minbic <- which.min(reg.summary$bic)
+points(minbic, reg.summary$bic[minbic], col = "brown", cex = 2, pch = 20)
+```
+
+The parameters of this model are presented below:
+```{r BIC-model-run}
+# get formula using 15 criteria
+usedvars = names(coef(regfit, minbic))[-1]
+BIC_model = paste0("glm(SalePrice ~ ", paste(usedvars, collapse = " + "), 
+                   ", data = model_data)")
+# run model and print summary
+bestsubset = eval(parse(text = BIC_model))
+# print model summary
+pander(summary(bestsubset))
+```
+
+```{r test-data}
+# read in test data, using ID column as row names
+test <- read.csv('test.csv', row.names = 1)
+
+# apply same imputations to test data as train data
+test$MSSubClass <- factor(test$MSSubClass)
+test$LotFrontage[is.na(test$LotFrontage)] <- 0
+test$MasVnrArea[is.na(test$MasVnrArea)] <- 0
+test$GarageYrBlt[is.na(test$GarageYrBlt)] <- 
+  test$YearBuilt[is.na(test$GarageYrBlt)] +
+  median(test$GarageYrBlt - test$YearBuilt, na.rm = TRUE)
+head(test)
+```
+
+### predication
+```{r}
+# apply models to test dataset
+pred_bic = predict(bestsubset, test)
+
+# impute median for NAs
+pred_bic[is.na(pred_bic)] <- median(train$SalePrice)
+
+# shift values so all are positive
+pred_bic <- pred_bic - min(pred_bic)
+
+# store as data frames
+pred_bic <- data.frame(Id = names(pred_bic), SalePrice = pred_bic)
+
+```
+
+
+#### Results
+The results of the two models' predictions are output to csv files and submitted to the Kaggle competition under the username [jim lung], the score is 0.46252.  The scores of these results are posted below:
+```{r write-results}
+# store results
+write.csv(pred_bic, 'jimlungBIC.csv', row.names = FALSE)
+
+```
